@@ -1,0 +1,101 @@
+<app-menu></app-menu>
+
+<div class="container my-3">
+
+    <app-header [title]="'Edición de Posts'" [icon]="'fas fa-pencil-alt'"></app-header>
+
+    <div class="row justify-content-center">
+
+        <form novalidate [formGroup]="oForm" (ngSubmit)="onSubmit()">
+
+            <div class="row mb-3">
+                <label for="id" class="col-sm-2 col-form-label">ID</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="text" placeholder="{{id}}" readonly>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label for="titulo" class="col-sm-2 col-form-label">Título</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="titulo" formControlName="titulo"
+                        [ngClass]="{'is-valid' : f.titulo.dirty && !(f.titulo.errors?.required || f.titulo.errors?.minlength) }">
+                    <div *ngIf="f.titulo.dirty && f.titulo.errors?.required" class="text-danger">
+                        Se debe introducir un título
+                    </div>
+                    <div *ngIf="f.titulo.dirty && f.titulo.errors?.minlength" class="text-danger">
+                        El título introducido es demasiado corto
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label for="cuerpo" class="col-sm-2 col-form-label">Cuerpo</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" id="cuerpo" rows="5" formControlName="cuerpo"
+                        [ngClass]="{'is-valid' : f.cuerpo.dirty && !(f.cuerpo.errors?.required) }"></textarea>
+                    <div *ngIf="f.cuerpo.dirty && f.cuerpo.errors?.required" class="text-danger">
+                        Se debe introducir un cuerpo
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label for="fecha" class="col-sm-2 col-form-label">Fecha</label>
+                <div class="col-sm-10">
+                    <input type="text" name="fecha" id="fecha" formControlName="fecha"
+                        class="text ui-widget-content ui-corner-all" />
+                    <div *ngIf="f.fecha.dirty && f.fecha.errors?.required" class="text-danger">
+                        Se debe introducir una fecha correcta
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label for="etiquetas" class="col-sm-2 col-form-label">Etiquetas</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="etiquetas" formControlName="etiquetas"
+                        [ngClass]="{'is-valid' : f.etiquetas.dirty && !(f.etiquetas.errors?.required) }">
+                    <div *ngIf="f.etiquetas.dirty && f.etiquetas.errors?.required" class="text-danger">
+                        Se debe introducir al menos una etiqueta
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label for="visible" class="col-sm-2 col-form-label">Visible</label>
+                <div class="col-sm-10">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="visible" formControlName="visible">
+                        <label class="form-check-label" for="visible">
+                            Visible
+                        </label>
+                    </div>
+                </div>
+            </div>
+ 
+            <div class="row mb-3 justify-content-center">
+                <div class="d-grid gap-2 d-md-block mt-3 d-md-flex justify-content-md-center">
+                    <button type="submit" class="btn btn-warning" [disabled]="oForm.invalid || oForm.pristine">Modificar
+                        el Post</button>
+                </div>
+            </div>
+ 
+        </form>
+
+        <div class="control-group text-center mt-5">
+            <div class="d-grid gap-2 d-md-block mt-3 d-md-flex justify-content-md-center">
+                <a class="btn btn-primary mx-2" [routerLink]="['/home']"><i class="fas fa-home"></i> Página
+                    principal</a>
+                <a class="btn btn-primary mx-2" [routerLink]="['/plist']"><i class="fas fa-file-alt"></i> Listado de
+                    Posts</a>
+                <a class="btn btn-primary mx-2" (click)="goBack()"><i class="fas fa-arrow-circle-left"></i> Volver </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<app-footer></app-footer>
+
+<app-modal [show]="eventsSubject.asObservable()" [body]="strResult" (close)="closeModal()"> </app-modal>

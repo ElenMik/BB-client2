@@ -1,0 +1,35 @@
+<app-menu></app-menu>
+
+<div class="container my-3">
+
+    <app-header [title]="'Salida del sistema'" [icon]="'fas fa-sign-out-alt'"></app-header>
+
+    <div class="row justify-content-center">
+        <div class="control-group text-center my-5">
+            <h4 class="text-muted text-monospace my-5">Actualmente está logueado en el sistema como
+                "{{strUsuarioSession}}"
+            </h4>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-5 control-group text-center my-3">
+            <div class="alert alert-danger" role="alert">
+
+                <h3 class="">¿Está seguro de que quiere salir de la sesión?</h3>             
+
+                <div class="d-grid gap-2 d-md-block mt-3 d-md-flex justify-content-md-center">
+                    <button class="btn btn-warning mx-1" (click)="closeSession()"><i
+                            class="fas fa-sign-out-alt"></i> Salir de la sesión</button>
+                    <a class="btn btn-primary mx-1" [routerLink]="['/home']"><i class="fas fa-home"></i> Página
+                        principal</a>
+                    <button class="btn btn-primary mx-1" (click)="goBack()"><i
+                            class="fas fa-arrow-circle-left"></i> Volver </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<app-footer></app-footer>

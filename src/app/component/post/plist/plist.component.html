@@ -1,0 +1,110 @@
+<app-menu></app-menu>
+
+<div class="container my-3">
+
+    <app-header [title]="'Listado de Posts'" [icon]="'fas fa-file-alt'" [subtitle]="totalElements + ' posts'"></app-header>
+
+
+
+    <div class="row justify-content-between">
+        <div class="col-md">
+            <nav aria-label="pagination">
+                <ul class="pagination">
+                    <li class="page-item" aria-current="page" *ngFor="let p of barraPaginacion"
+                        [ngClass]="{'active': (page+'' == p)}">
+                        <a class="page-link" (click)="page=(+p);jumpToPage()" href="#">{{p}}</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-md text-center">            
+            <a [routerLink]="['/new']" type="button" class="btn btn-success mb-2">
+                <i class="fas fa-plus"></i> Añadir nuevo Post
+            </a>                  
+        </div>
+        <div class="col-md text-end">
+            <div class="dropdown mb-3">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Registros por página: {{pageSize}}
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" (click)="pageSize=10;getPage()">10</a></li>
+                    <li><a class="dropdown-item" (click)="pageSize=50;getPage()">50</a></li>
+                    <li><a class="dropdown-item" (click)="pageSize=100;getPage()">100</a></li>
+                    <li><a class="dropdown-item" (click)="pageSize=1000;getPage()">1000</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md table-responsive-md">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr class="text-center">
+                        <th><button type="button" class="botonicono" (click)="orden=campo=='id' ? !orden:true;campo='id'; getPage()"><b>ID</b><i id="short" class="fas fa-arrows-alt-v"></i></button></th>
+                        <th><button type="button"  class="botonicono"  (click)="orden=campo=='titulo' ? !orden:true;campo='titulo'; getPage()"><b>Título</b><i id="short" class="fas fa-arrows-alt-v "></i></button></th>
+                        <th><button type="button"   class="botonicono" (click)="orden=campo=='cuerpo' ? !orden:true;campo='cuerpo'; getPage()"><b>Cuerpo</b><i id="short"class="fas fa-arrows-alt-v"></i></button></th>
+                        <th><button type="button"   class="botonicono" (click)="orden=campo=='fecha' ? !orden:true;campo='fecha'; getPage()"><b>Fecha</b><i id="short" class="fas fa-arrows-alt-v"></i></button></th>
+                        <th><button type="button"   class="botonicono" (click)="orden=campo=='etiquetas' ? !orden:true;campo='etiquetas'; getPage()"><b>Etiquetas</b><i id="short"class="fas fa-arrows-alt-v"></i></button></th>
+                        <th><button type="button"  class="botonicono" (click)="orden=campo=='visible' ? !orden:true;campo='visible'; getPage()"><b>Visible</b><i id="short" class="fas fa-arrows-alt-v"></i></button></th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let fila of aPosts">
+                        <td>{{fila.id}}</td>
+                        <td>{{fila.titulo | trim:25}}</td>
+                        <td>{{fila.cuerpo | trim:20}}</td>
+                        <td>{{fila.fecha | showDateTime }}</td>
+                        <td>{{fila.etiquetas}}</td>
+                        <td class="text-center"  (click)="changevisible(fila.id)" [innerHTML]="fila.visible | showBoolean"></td>
+                        <td class="text-center">
+                            <div class="btn-group btn-group-sm" role="group" aria-label="Basic mixed styles example">
+                                <button type="button" class="btn btn-success" [routerLink]="['/view/' + fila.id]"><i
+                                        class="fas fa-eye"></i></button>
+                                <button type="button" class="btn btn-primary" (click)="openModal(fila.id)">
+                                    <i class="fas fa-search-plus"></i></button>
+                                <button type="button" class="btn btn-warning" [routerLink]="['/edit/' + fila.id]"><i
+                                        class="fas fa-pen"></i></button>
+                                <button type="button" class="btn btn-danger" [routerLink]="['/remove/' + fila.id]"><i
+                                        class="fas fa-trash"></i></button>
+                                       
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<app-footer></app-footer>
+<app-modal [show]="eventsSubject.asObservable()" (close)="closeModal()">
+
+<p>
+    ID:{{oPost?.id}}
+</p> 
+<br>
+<p>
+ TITULO: {{oPost?.titulo}}
+</p>
+<br>
+<p>
+   CUERPO: {{oPost?.cuerpo}}
+ </p>
+ <br>
+ <p>
+    FECHA: {{oPost?.fecha |showDateTime}}
+  </p>
+  <br>
+<p>
+   ETIQUETAS: {{oPost?.etiquetas}}
+ </p>
+ <br>
+
+ VISIBLE: <td [innerHTML]="oPost?.visible | showBoolean"></td>
+ 
+
+</app-modal>
